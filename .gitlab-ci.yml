@@ -1,5 +1,9 @@
 stages:
   - test
+  - deploy
+
+variables:
+  GIT_DEPTH: 0   # clone complet : hatch-vcs a besoin de tout l'historique et des tags
 
 test:
   stage: test
@@ -9,3 +13,27 @@ test:
   script:
     - hatch test --cover
   coverage: '/TOTAL.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+
+.deploy_template: &deploy
+  stage: deploy
+  image: python:3.12
+  before_script:
+    - pip install hatch
+  script:
+    - hatch build
+    - echo "my-arithmetic-wlefebvr deployment on $SERVERS servers"
+    - ls -l dist/
+
+deploy_stable:
+  <<: *deploy
+  variables:
+    SERVERS: stable
+  rules:
+    - if: $CI_COMMIT_TAG
+
+deploy_develop:
+  <<: *deploy
+  variables:
+    SERVERS: develop
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
