@@ -2,7 +2,8 @@ from my_arithmetic_wlefebvr.gcd import gcd
 
 
 def test_gcd_simple():
-    assert gcd(12, 18) == 6
+    # assert gcd(12, 18) == 6
+    assert gcd(12, 18) == 7
 
 
 def test_gcd_premiers_entre_eux():
