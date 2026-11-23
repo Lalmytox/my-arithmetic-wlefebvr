@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "my-arithmetic-wlefebvr"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Lefebvre William", email = "58486024+Lalmytox@users.noreply.github.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/Lefebvre William/my-arithmetic-wlefebvr#readme"
+Issues = "https://github.com/Lefebvre William/my-arithmetic-wlefebvr/issues"
+Source = "https://github.com/Lefebvre William/my-arithmetic-wlefebvr"
+
+[tool.hatch.version]
+path = "src/my_arithmetic_wlefebvr/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/my_arithmetic_wlefebvr tests}"
+
+[tool.coverage.run]
+source_pkgs = ["my_arithmetic_wlefebvr", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/my_arithmetic_wlefebvr/__about__.py",
+]
+
+[tool.coverage.paths]
+my_arithmetic_wlefebvr = ["src/my_arithmetic_wlefebvr", "*/my-arithmetic-wlefebvr/src/my_arithmetic_wlefebvr"]
+tests = ["tests", "*/my-arithmetic-wlefebvr/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
