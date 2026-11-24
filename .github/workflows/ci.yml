@@ -14,6 +14,11 @@ jobs:
           python-version: "3.12"
       - run: pip install hatch
       - run: hatch test --cover
+            - run: pip install coverage
+      - run: coverage xml            # convertit le résultat en coverage.xml
+      - uses: coverallsapp/github-action@v2
+        with:
+          file: coverage.xml
 
   deploy_stable:
     needs: test
