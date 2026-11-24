@@ -46,3 +46,14 @@ jobs:
       - run: hatch build
       - run: echo "my-arithmetic-wlefebvr deployment on develop servers"
       - run: ls -l dist/
+
+  docs:
+    needs: test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Read the Docs build
+        run: |
+          curl -X POST --fail \
+            -H "Authorization: Token ${{ secrets.RTD_TOKEN }}" \
+            https://app.readthedocs.org/api/v3/projects/my-arithmetic-wlefebvr/versions/latest/builds/
