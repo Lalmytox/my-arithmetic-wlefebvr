@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:            # chaque push, sur toutes les branches et tous les tags
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install hatch
+      - run: hatch test --cover
+
+  deploy_stable:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0       # historique complet + tags pour hatch-vcs
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install hatch
+      - run: hatch build
+      - run: echo "my-arithmetic-wlefebvr deployment on stable servers"
+      - run: ls -l dist/
+
+  deploy_develop:
+    needs: test
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install hatch
+      - run: hatch build
+      - run: echo "my-arithmetic-wlefebvr deployment on develop servers"
+      - run: ls -l dist/
